@@ -100,5 +100,24 @@ router.delete("/:id", authMiddleware, adminMiddleware, async (req, res) => {
   }
 });
 
+// 🔍 Search sweets by name
+router.get("/search", async (req, res) => {
+  try {
+    const { q } = req.query; // e.g. /api/sweets/search?q=jamun
+    if (!q) {
+      return res.status(400).json({ message: "Query parameter 'q' is required" });
+    }
+
+    // Case-insensitive search using regex
+    const sweets = await Sweet.find({
+      name: { $regex: q, $options: "i" },
+    });
+
+    res.json(sweets);
+  } catch (error) {
+    console.error("Error searching sweets:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 
 module.exports = router;

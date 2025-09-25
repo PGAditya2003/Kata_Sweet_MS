@@ -1,19 +1,17 @@
-// src/App.jsx
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Catalog from "./pages/Catalog";
-import { useState } from "react";
+import SearchResults from "./pages/SearchResults";
+import Home from "./pages/Catalog"; // example
 
 function App() {
-  const [user, setUser] = useState(null);
-
   return (
-    <>
-      <Navbar user={user} setUser={setUser} />
-      {/* <div id="home" className="h-screen flex items-center justify-center">
-        <h1 className="text-5xl font-bold text-yellow-700">Welcome to SweetDelights</h1>
-      </div> */}
-      <Catalog user={user} />
-    </>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/search" element={<SearchResults />} />
+      </Routes>
+    </Router>
   );
 }
 

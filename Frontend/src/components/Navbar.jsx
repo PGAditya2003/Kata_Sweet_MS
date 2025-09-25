@@ -1,5 +1,6 @@
 // src/components/Navbar.jsx
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
 
@@ -7,11 +8,13 @@ export default function Navbar() {
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
   const [user, setUser] = useState(null);
+  const [query, setQuery] = useState("");
+  const navigate = useNavigate();
 
   // On mount, check if user is logged in
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const username = localStorage.getItem("username"); // optional, store username on login/register
+    const username = localStorage.getItem("username");
     if (token) setUser({ token, username });
   }, []);
 
@@ -35,16 +38,50 @@ export default function Navbar() {
     setUser(null);
   };
 
+  // 🔍 Handle search → redirect to results page
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (!query.trim()) return;
+    navigate(`/search?q=${encodeURIComponent(query)}`);
+  };
+
   return (
     <>
       <nav className="fixed top-0 w-full bg-beige shadow-md z-50">
         <div className="max-w-7xl mx-auto px-4 md:px-16 h-16 flex items-center justify-between">
           <div className="text-2xl font-bold text-yellow-700">SweetDelights</div>
+
+          {/* Navigation Links */}
           <div className="hidden md:flex space-x-8 text-brown-700 font-medium">
-            <a href="#home" className="hover:text-yellow-600 transition-colors">Home</a>
-            <a href="#catalog" className="hover:text-yellow-600 transition-colors">Catalog</a>
-            <a href="#contact" className="hover:text-yellow-600 transition-colors">Contact</a>
+            <a href="#home" className="hover:text-yellow-600 transition-colors">
+              Home
+            </a>
+            <a href="#catalog" className="hover:text-yellow-600 transition-colors">
+              Catalog
+            </a>
+            <a href="#contact" className="hover:text-yellow-600 transition-colors">
+              Contact
+            </a>
           </div>
+
+          {/* 🔍 Search box */}
+          <form onSubmit={handleSearch} className="hidden md:flex items-center space-x-2">
+            <input
+              type="text"
+              placeholder="Search sweets..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="px-3 py-1 border border-yellow-600 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-600"
+            />
+            <button
+              type="submit"
+              className="bg-yellow-600 text-white px-3 py-1 rounded-md hover:bg-yellow-700 transition-colors"
+            >
+              Search
+            </button>
+          </form>
+
+          {/* Auth buttons */}
           <div className="hidden md:flex space-x-4">
             {!user ? (
               <>
@@ -63,7 +100,7 @@ export default function Navbar() {
               </>
             ) : (
               <>
-              <span className="px-4 py-2">{user.username}</span>
+                <span className="px-4 py-2">{user.username}</span>
                 <button
                   onClick={handleLogout}
                   className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors"

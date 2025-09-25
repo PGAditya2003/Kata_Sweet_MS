@@ -72,7 +72,7 @@ export default function Catalog({ user }) {
   if (loading) return <div className="text-center py-10">Loading sweets...</div>;
 
   return (
-    <div id="catalog" className="max-w-7xl mx-auto px-4 md:px-16 py-12">
+    <div id="catalog" className="mt-10 max-w-7xl mx-auto px-4 md:px-16 py-12">
       <h2 className="text-3xl font-bold text-yellow-700 mb-8">Sweet Catalog</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {sweets.map((sweet) => {
