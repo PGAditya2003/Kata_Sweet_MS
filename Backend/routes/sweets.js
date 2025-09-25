@@ -67,7 +67,38 @@ router.delete("/:id", authMiddleware, adminMiddleware, async (req, res) => {
 /**
  * PATCH /api/sweets/:id/purchase
  * Reduce stock quantity after a purchase (admin only)
- */
+ */router.patch("/:id/purchase", authMiddleware, adminMiddleware, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { quantity } = req.body;
+
+    // Validate ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid Sweet ID" });
+    }
+
+    // Validate quantity
+    if (quantity == null || quantity <= 0) {
+      return res.status(400).json({ message: "Quantity must be a positive number" });
+    }
+
+    const sweet = await Sweet.findById(id);
+    if (!sweet) {
+      return res.status(404).json({ message: "Sweet not found" });
+    }
+
+    if (sweet.stock < quantity) {
+      return res.status(400).json({ message: "Not enough stock available" });
+    }
+
+    sweet.stock -= quantity;
+    await sweet.save();
+
+    res.status(200).json({ message: "Stock updated successfully", stock: sweet.stock });
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+});
 
 
 module.exports = router;
