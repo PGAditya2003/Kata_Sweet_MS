@@ -1,6 +1,6 @@
 // src/components/Navbar.jsx
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
 
@@ -11,7 +11,6 @@ export default function Navbar() {
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
 
-  // On mount, check if user is logged in
   useEffect(() => {
     const token = localStorage.getItem("token");
     const username = localStorage.getItem("username");
@@ -38,7 +37,6 @@ export default function Navbar() {
     setUser(null);
   };
 
-  // 🔍 Handle search → redirect to results page
   const handleSearch = (e) => {
     e.preventDefault();
     if (!query.trim()) return;
@@ -47,21 +45,21 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-0 w-full bg-beige shadow-md z-50">
+      <nav className="fixed top-0 w-full bg-white shadow-md z-50">
         <div className="max-w-7xl mx-auto px-4 md:px-16 h-16 flex items-center justify-between">
           <div className="text-2xl font-bold text-yellow-700">SweetDelights</div>
 
           {/* Navigation Links */}
           <div className="hidden md:flex space-x-8 text-brown-700 font-medium">
-            <a href="#home" className="hover:text-yellow-600 transition-colors">
+            <Link to="/" className="hover:text-yellow-600 transition-colors">
               Home
-            </a>
-            <a href="#catalog" className="hover:text-yellow-600 transition-colors">
+            </Link>
+            <Link to="/catalog" className="hover:text-yellow-600 transition-colors">
               Catalog
-            </a>
-            <a href="#contact" className="hover:text-yellow-600 transition-colors">
-              Contact
-            </a>
+            </Link>
+            <Link to="/orders" className="hover:text-yellow-600 transition-colors">
+              Orders
+            </Link>
           </div>
 
           {/* 🔍 Search box */}

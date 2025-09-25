@@ -79,7 +79,7 @@ export default function Catalog({ user }) {
           const totalPrice = (quantities[sweet._id] * sweet.price * (1 + gstRate)).toFixed(2);
 
           return (
-            <div key={sweet._id} className="bg-beige p-4 rounded-lg shadow-md flex flex-col">
+            <div key={sweet._id} className="bg-white p-4 rounded-lg shadow-md flex flex-col">
               <img src={sweet.imageUrl} alt={sweet.name} className="h-40 w-full object-cover rounded-md mb-4"/>
               <h3 className="text-xl font-semibold text-brown-700">{sweet.name}</h3>
               <p className="text-brown-600 mb-2">Price: ₹{sweet.price}</p>
