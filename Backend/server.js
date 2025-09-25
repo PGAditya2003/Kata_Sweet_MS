@@ -7,6 +7,14 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
+const cors = require("cors");
+
+app.use(cors({
+  origin: "http://localhost:5173", // Vite dev server
+  credentials: true
+}));
+
+
 // Only connect to real MongoDB if not testing
 if (process.env.NODE_ENV !== "test") {
   connectDB();
