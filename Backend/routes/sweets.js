@@ -67,7 +67,8 @@ router.delete("/:id", authMiddleware, adminMiddleware, async (req, res) => {
 /**
  * PATCH /api/sweets/:id/purchase
  * Reduce stock quantity after a purchase (admin only)
- */router.patch("/:id/purchase", authMiddleware, adminMiddleware, async (req, res) => {
+ */
+router.put("/:id/purchase", authMiddleware, adminMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
     const { quantity } = req.body;

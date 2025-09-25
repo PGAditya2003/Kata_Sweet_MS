@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Layout from "./components/Layout";
@@ -7,9 +8,19 @@ import SearchResults from "./pages/SearchResults";
 import Orders from "./pages/Orders";
 
 function App() {
+  const [user, setUser] = useState(null);
+
+  // On mount, check if user is logged in
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const username = localStorage.getItem("username");
+    const role = localStorage.getItem("role"); // optional
+    if (token) setUser({ token, username, role });
+  }, []);
+
   return (
     <Router>
-      <Navbar />
+      <Navbar user={user} setUser={setUser} />
       <Routes>
         <Route
           path="/"
@@ -23,7 +34,7 @@ function App() {
           path="/catalog"
           element={
             <Layout>
-              <Catalog />
+              <Catalog user={user} />
             </Layout>
           }
         />
@@ -31,7 +42,7 @@ function App() {
           path="/orders"
           element={
             <Layout>
-              <Orders />
+              <Orders user={user} />
             </Layout>
           }
         />
@@ -39,7 +50,7 @@ function App() {
           path="/search"
           element={
             <Layout>
-              <SearchResults />
+              <SearchResults user={user} />
             </Layout>
           }
         />
