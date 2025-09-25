@@ -1,21 +1,20 @@
 const mongoose = require("mongoose");
 const { MongoMemoryServer } = require("mongodb-memory-server");
 const request = require("supertest");
-const { expect } = require("chai");
 const bcrypt = require("bcryptjs");
 const app = require("../server");
 const User = require("../models/User");
 
-describe("Auth Route - Login", function () {
+describe("Auth Route - Login", () => {
   let mongoServer;
 
-  before(async () => {
+  beforeAll(async () => {
     mongoServer = await MongoMemoryServer.create();
     const uri = mongoServer.getUri();
     await mongoose.connect(uri);
   });
 
-  after(async () => {
+  afterAll(async () => {
     await mongoose.disconnect();
     await mongoServer.stop();
   });
@@ -28,7 +27,7 @@ describe("Auth Route - Login", function () {
     await User.create({
       username: "testuser",
       email: "test@example.com",
-      password: hashedPassword, // matches schema
+      password: hashedPassword,
       role: "user",
     });
   });
@@ -38,9 +37,9 @@ describe("Auth Route - Login", function () {
       .post("/api/auth/login")
       .send({ email: "test@example.com", password: "password123" });
 
-    expect(res.status).to.equal(200);
-    expect(res.body).to.have.property("token");
-    expect(res.body).to.have.property("role", "user");
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty("token");
+    expect(res.body).toHaveProperty("role", "user");
   });
 
   it("should fail login with wrong password", async () => {
@@ -48,8 +47,8 @@ describe("Auth Route - Login", function () {
       .post("/api/auth/login")
       .send({ email: "test@example.com", password: "wrongpass" });
 
-    expect(res.status).to.equal(400);
-    expect(res.body).to.have.property("message", "Invalid credentials");
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty("message", "Invalid credentials");
   });
 
   it("should fail login with non-existent email", async () => {
@@ -57,7 +56,7 @@ describe("Auth Route - Login", function () {
       .post("/api/auth/login")
       .send({ email: "nonexist@example.com", password: "password123" });
 
-    expect(res.status).to.equal(400);
-    expect(res.body).to.have.property("message", "Invalid credentials");
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty("message", "Invalid credentials");
   });
 });
