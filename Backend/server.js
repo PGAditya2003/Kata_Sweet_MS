@@ -7,11 +7,17 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-// Connect to DB
-connectDB();
+// Only connect to real MongoDB if not testing
+if (process.env.NODE_ENV !== "test") {
+  connectDB();
+}
 
 // Auth routes
-app.use('/api/auth', require('./routes/auth'));
+app.use("/api/auth", require("./routes/auth"));
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+if (require.main === module) {
+  app.listen(PORT, () => console.log(`Server running on ${PORT}`));
+}
+
+module.exports = app;

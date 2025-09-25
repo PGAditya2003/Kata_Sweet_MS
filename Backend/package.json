@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.2",
     "chai": "^4.5.0",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
@@ -9,6 +10,7 @@
   },
   "devDependencies": {
     "mocha": "^11.7.2",
+    "mongodb-memory-server": "^10.2.1",
     "sinon": "^21.0.0",
     "supertest": "^7.1.4"
   }
