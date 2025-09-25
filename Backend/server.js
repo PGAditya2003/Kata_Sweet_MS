@@ -14,6 +14,7 @@ if (process.env.NODE_ENV !== "test") {
 
 // Auth routes
 app.use("/api/auth", require("./routes/auth"));
+app.use("/api/sweets", require("./routes/sweets"));
 
 const PORT = process.env.PORT || 5000;
 if (require.main === module) {
