@@ -5,7 +5,7 @@ const { expect } = require('chai');
 describe('MongoDB Connection', function() {
   it('should connect to MongoDB successfully', async function() {
     // override MONGO_URI for test environment
-    process.env.MONGO_URI = 'mongodb+srv://PGA:LkNu6fladxVH7p9U@cluster0.7ckdq3d.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+    process.env.MONGO_URI = '';
     
     let error = null;
     try {
